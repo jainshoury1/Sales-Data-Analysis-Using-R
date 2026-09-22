@@ -1,0 +1,452 @@
+---
+title: "Sales Data Analysis Using R"
+author: "Shoury Jain"
+date: "2026-09-17"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+# Sales Data Analysis Using R
+
+## Introduction
+
+This project analyzes sales data using R.
+
+The dataset contains information about products, categories,
+quantity sold, unit price, sales amount, and regions.
+
+R is used to organize the data, perform statistical analysis,
+create graphs, and understand sales patterns.
+
+### Objectives
+
+- Create sales data
+- Check and clean the data
+- Perform statistical analysis
+- Analyze product sales
+- Compare regional sales
+- Create graphs
+- Interpret the results
+- Identify important findings
+- Give a conclusion
+
+## Project Background
+
+Sales analysis helps businesses understand their sales performance.
+
+By analyzing sales data, we can compare products, quantities,
+prices, and different regions.
+
+In this project, R is used to perform basic data analysis
+and visualization.
+
+### Scope of the Project
+
+This project focuses on 20 sales records.
+
+The main variables are:
+
+- Date
+- Product
+- Category
+- Quantity
+- Unit Price
+- Region
+- Sales
+
+## 1. Create Sales Data
+
+We create a sales dataset using the `data.frame()` function.
+
+```{r}
+sales <- data.frame(
+  Date = c(
+    "2026-01-05", "2026-01-08", "2026-01-12", "2026-01-18", "2026-01-23",
+    "2026-02-03", "2026-02-09", "2026-02-15", "2026-02-21", "2026-02-27",
+    "2026-03-04", "2026-03-10", "2026-03-16", "2026-03-22", "2026-03-28",
+    "2026-04-05", "2026-04-11", "2026-04-17", "2026-04-23", "2026-04-29"
+  ),
+  Product = c(
+    "Laptop", "Mouse", "Keyboard", "Monitor", "Headphones",
+    "Laptop", "Mouse", "Keyboard", "Monitor", "Headphones",
+    "Laptop", "Mouse", "Keyboard", "Monitor", "Headphones",
+    "Laptop", "Mouse", "Keyboard", "Monitor", "Headphones"
+  ),
+  Category = c(
+    "Electronics", "Accessories", "Accessories", "Electronics", "Accessories",
+    "Electronics", "Accessories", "Accessories", "Electronics", "Accessories",
+    "Electronics", "Accessories", "Accessories", "Electronics", "Accessories",
+    "Electronics", "Accessories", "Accessories", "Electronics", "Accessories"
+  ),
+  Quantity = c(
+    3, 15, 10, 6, 12,
+    4, 18, 12, 7, 15,
+    5, 20, 14, 8, 18,
+    6, 22, 16, 9, 20
+  ),
+  Unit_Price = c(
+    55000, 1200, 2200, 18000, 2500,
+    55000, 1200, 2200, 18000, 2500,
+    55000, 1200, 2200, 18000, 2500,
+    55000, 1200, 2200, 18000, 2500
+  ),
+  Region = c(
+    "North", "West", "South", "East", "West",
+    "South", "North", "East", "West", "South",
+    "East", "West", "North", "South", "East",
+    "West", "South", "East", "North", "West"
+  )
+)
+
+sales$Sales <- sales$Quantity * sales$Unit_Price
+
+sales
+```
+
+### Dataset Description
+
+The dataset contains 20 sales records.
+
+The variables used in the dataset are:
+
+- **Date:** Date of the sale
+- **Product:** Name of the product
+- **Category:** Product category
+- **Quantity:** Number of units sold
+- **Unit Price:** Price of one unit
+- **Region:** Sales region
+- **Sales:** Total sales amount
+
+## 2. Check the Data
+
+We use `summary()` to get a basic overview of the dataset.
+
+```{r}
+summary(sales)
+```
+
+The summary provides information about the numerical variables
+in the dataset.
+
+## 3. Check Dataset Structure
+
+The `str()` function is used to understand the structure
+of the dataset.
+
+```{r}
+str(sales)
+```
+
+This helps us understand the number of observations,
+variables, and their data types.
+
+## 4. Check Missing Values and Duplicates
+
+We check whether the dataset contains missing values
+or duplicate records.
+
+```{r}
+colSums(is.na(sales))
+sum(duplicated(sales))
+```
+
+The dataset contains no missing values and no duplicate records.
+
+Therefore, the data is ready for analysis.
+
+## 5. Basic Statistical Analysis
+
+We calculate important statistics for quantity and sales.
+
+```{r}
+mean(sales$Quantity)
+max(sales$Quantity)
+min(sales$Quantity)
+
+mean(sales$Sales)
+max(sales$Sales)
+min(sales$Sales)
+```
+
+These values help us understand the average, highest,
+and lowest sales performance.
+
+## 6. Total Sales
+
+We calculate the total sales from all records.
+
+```{r}
+total_sales <- sum(sales$Sales)
+
+total_sales
+```
+
+The total sales represent the overall sales amount
+recorded in the dataset.
+
+## 7. Sales by Product
+
+We calculate total sales for each product.
+
+```{r}
+product_sales <- aggregate(
+  Sales ~ Product,
+  data = sales,
+  FUN = sum
+)
+
+product_sales
+```
+
+This table helps compare the sales performance
+of different products.
+
+### Product Sales Graph
+
+```{r}
+barplot(
+  product_sales$Sales,
+  names.arg = product_sales$Product,
+  main = "Total Sales by Product",
+  xlab = "Product",
+  ylab = "Total Sales"
+)
+```
+
+The graph provides a visual comparison of total sales
+between different products.
+
+## 8. Quantity Sold by Product
+
+We calculate the total quantity sold for each product.
+
+```{r}
+product_quantity <- aggregate(
+  Quantity ~ Product,
+  data = sales,
+  FUN = sum
+)
+
+product_quantity
+```
+
+### Quantity Sold Graph
+
+```{r}
+barplot(
+  product_quantity$Quantity,
+  names.arg = product_quantity$Product,
+  main = "Quantity Sold by Product",
+  xlab = "Product",
+  ylab = "Quantity Sold"
+)
+```
+
+The graph shows the number of units sold for each product.
+
+## 9. Sales by Region
+
+We calculate total sales for each region.
+
+```{r}
+region_sales <- aggregate(
+  Sales ~ Region,
+  data = sales,
+  FUN = sum
+)
+
+region_sales
+```
+
+### Regional Sales Graph
+
+```{r}
+barplot(
+  region_sales$Sales,
+  names.arg = region_sales$Region,
+  main = "Total Sales by Region",
+  xlab = "Region",
+  ylab = "Total Sales"
+)
+```
+
+The graph helps compare sales performance across regions.
+
+## 10. Average Sales by Product
+
+We calculate the average sales for each product.
+
+```{r}
+average_product_sales <- aggregate(
+  Sales ~ Product,
+  data = sales,
+  FUN = mean
+)
+
+average_product_sales
+```
+
+This analysis helps us understand the average sales
+generated by different products.
+
+## 11. Quantity vs Sales
+
+A scatter plot is used to understand the relationship
+between quantity sold and sales.
+
+```{r}
+plot(
+  sales$Quantity,
+  sales$Sales,
+  main = "Quantity Sold vs Sales",
+  xlab = "Quantity Sold",
+  ylab = "Sales",
+  pch = 19
+)
+```
+
+The graph shows the relationship between the number
+of units sold and the sales amount.
+
+## 12. Unit Price vs Sales
+
+We compare unit price with total sales.
+
+```{r}
+plot(
+  sales$Unit_Price,
+  sales$Sales,
+  main = "Unit Price vs Sales",
+  xlab = "Unit Price",
+  ylab = "Sales",
+  pch = 19
+)
+```
+
+The graph helps us understand the relationship between
+unit price and sales.
+
+## 13. Correlation Analysis
+
+Correlation helps us understand the relationship
+between quantity sold and sales.
+
+```{r}
+cor(sales$Quantity, sales$Sales)
+```
+
+A positive value indicates a positive relationship
+between the two variables.
+
+## 14. Highest Sales Record
+
+We identify the record with the highest sales.
+
+```{r}
+sales[which.max(sales$Sales), ]
+```
+
+This gives information about the product, quantity,
+price, region, and sales amount of the highest sales record.
+
+## 15. Lowest Sales Record
+
+We identify the record with the lowest sales.
+
+```{r}
+sales[which.min(sales$Sales), ]
+```
+
+This identifies the record with the lowest sales amount.
+
+## 16. Interpretation of Results
+
+The analysis provides several observations.
+
+- Different products generate different sales amounts.
+- Sales performance varies between regions.
+- Quantity sold has a relationship with total sales.
+- Product-wise analysis helps compare products.
+- Regional analysis helps compare different regions.
+- Graphs make the sales data easier to understand.
+
+The results are based on the sample dataset used in this project.
+
+## 17. Key Findings
+
+The main findings are:
+
+- Total sales can be calculated using `sum()`.
+- Product sales can be compared using `aggregate()`.
+- Regional sales can be compared using a bar graph.
+- Quantity sold can be analyzed using statistical functions.
+- Highest and lowest sales records can be identified.
+- Graphs provide a visual representation of sales data.
+- The dataset has no missing values.
+- The dataset has no duplicate records.
+
+## 18. Limitations
+
+This project has some limitations.
+
+- The dataset contains only 20 records.
+- Only a limited number of products are included.
+- Only four regions are considered.
+- Customer information is not included.
+- Profit and expenses are not included.
+- The dataset is a small sample.
+
+Therefore, the results should be interpreted according
+to the available data.
+
+## 19. Future Scope
+
+The project can be improved by using a larger dataset.
+
+Additional information could include:
+
+- Customer details
+- Profit
+- Discount
+- Salesperson
+- Monthly sales
+- Customer ratings
+- Payment method
+
+Advanced statistical methods and machine learning
+could also be used for future sales prediction.
+
+## 20. Conclusion
+
+This project analyzed sales data using R.
+
+The project demonstrated how to create a dataset,
+check its structure, identify missing values and duplicates,
+perform statistical analysis, and create graphs.
+
+Product-wise and region-wise analysis helped us understand
+different aspects of sales performance.
+
+Overall, R provides useful tools for data analysis,
+visualization, and interpretation of sales data.
+
+## Final Summary
+
+In this project, we learned how to:
+
+- Create a dataset
+- Check data structure
+- Check missing values
+- Check duplicate records
+- Calculate statistics
+- Calculate total sales
+- Analyze products
+- Analyze regions
+- Create bar graphs
+- Create scatter plots
+- Calculate correlation
+- Interpret results
+- Identify findings
+- Discuss limitations
+- Suggest future improvements
